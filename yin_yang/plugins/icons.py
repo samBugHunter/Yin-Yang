@@ -14,15 +14,10 @@ class Icons(PluginDesktopDependent):
         match desktop:
             case Desktop.MATE:
                 super().__init__(_Mate())
-            case Desktop.GNOME:
-                super().__init__(_Gnome())
-                if not self.strategy.available:
-                    print(
-                        "You need to install an extension for gnome to use it. \n"
-                        "You can get it from here: https://extensions.gnome.org/extension/19/user-themes/"
-                    )
             case Desktop.CINNAMON:
                 super().__init__(_Cinnamon())
+            case Desktop.GNOME:
+                super().__init__(_Gnome())
             case Desktop.BUDGIE:
                 super().__init__(_Budgie())
             case Desktop.KDE:
