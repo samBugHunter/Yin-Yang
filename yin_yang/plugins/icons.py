@@ -14,6 +14,13 @@ class Icons(PluginDesktopDependent):
         match desktop:
             case Desktop.MATE:
                 super().__init__(_Mate())
+            case Desktop.GNOME:
+                super().__init__(_Gnome())
+                if not self.strategy.available:
+                    print(
+                        "You need to install an extension for gnome to use it. \n"
+                        "You can get it from here: https://extensions.gnome.org/extension/19/user-themes/"
+                    )
             case Desktop.CINNAMON:
                 super().__init__(_Cinnamon())
             case Desktop.BUDGIE:
@@ -35,6 +42,23 @@ class _Mate(PluginCommandline):
     @property
     def available(self):
         return self.check_command(['dconf', 'help'])
+class _Gnome(PluginCommandline):
+    def __init__(self):
+        super().__init__(
+            [
+                "gsettings",
+                "set",
+                "org.gnome.desktop.interface",
+                "icon-theme",
+                '"{theme}"',
+            ]
+        )
+        self.theme_light = "Default"
+        self.theme_dark = "Default"
+
+    @property
+    def available(self) -> bool:
+        return test_gnome_availability(self.command)
 
 
 class _Cinnamon(PluginCommandline):
